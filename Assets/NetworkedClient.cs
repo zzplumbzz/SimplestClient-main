@@ -181,6 +181,11 @@ public class NetworkedClient : MonoBehaviour
         // }
     }
 
+    public string GetCurrentPlayer()
+    {
+        return currentPlayer;
+    }
+
     public bool IsConnected()
     {
         Debug.Log("IS Connected NC");

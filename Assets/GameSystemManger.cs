@@ -55,24 +55,24 @@ public class GameSystemManger : MonoBehaviour
     MessageScript MS;
 //tic tac toe stuff below
     public Text[] buttonList;
-    private string currentPlayer;
+    public string currentPlayer;
     GameObject TTTBoard;
     GameObject Grid0;
     GameObject Grid1;
     GameObject Grid2;
     GameObject Grid3;
-    GameObject GridSpace0;
-    GameObject GridSpace1;
-    GameObject GridSpace2;
-    GameObject GridSpace3;
-    GameObject GridSpace4;
-    GameObject GridSpace5;
-    GameObject GridSpace6;
-    GameObject GridSpace7;
-    GameObject GridSpace8;
-    GameObject PlayerX;
-    GameObject PlayerO;
-    GameObject StartInfo;
+    public GameObject GridSpace0;
+    public GameObject GridSpace1;
+    public GameObject GridSpace2;
+    public GameObject GridSpace3;
+    public GameObject GridSpace4;
+    public GameObject GridSpace5;
+    public GameObject GridSpace6;
+    public GameObject GridSpace7;
+    public GameObject GridSpace8;
+    public GameObject PlayerX;
+    public GameObject PlayerO;
+    public GameObject StartInfo;
 
 
     private int moveCount;
@@ -340,7 +340,7 @@ public class GameSystemManger : MonoBehaviour
         GridSpace6.GetComponent<Button>().interactable = false;
         GridSpace7.GetComponent<Button>().interactable = false;
         GridSpace8.GetComponent<Button>().interactable = false;
-        EndTurn();
+        EndTurn();//(currentPlayer)
     }
 
     void SetPlayerColors(Player newPlayer, Player oldPlayer)
@@ -372,7 +372,7 @@ public class GameSystemManger : MonoBehaviour
         //Debug.Log("SomeOne won!");
 
         restartButton.SetActive(true);
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
     }
 
     void SetGameOverText(string value)
@@ -393,7 +393,7 @@ public class GameSystemManger : MonoBehaviour
         //SetBoardInteractable(true);
 
         SetPlayerColorsInactive();
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
         for (int i = 0; i < buttonList.Length; i++)
         {
             //buttonList[i].GetComponentInParent<Button>().interactable = true;
@@ -435,6 +435,18 @@ public class GameSystemManger : MonoBehaviour
         SetPlayerButtons(false);
         startInfo.SetActive(false);
         
+    }
+
+    bool CurrentClientsTurn(bool ClientsTurn)
+    {
+        if(ClientsTurn)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     void SetPlayerButtons (bool toggle) 
@@ -686,51 +698,53 @@ public class GameSystemManger : MonoBehaviour
             textNameInfo.SetActive(false);
             textPasswordInfo.SetActive(false);
 
-
+            currentPlayer = networkedClient.GetComponent<NetworkedClient>().GetCurrentPlayer();
+            SetPlayerColors(playerX, playerO);
+            StartGame();
         }
 
-        else if (newState == GameStates.OpponentPlay)
-        {
-            Debug.Log("opponent play state");
-            //ticTacToeSquareButton.SetActive(false);
-            joinGameRoomButton.SetActive(false);
-            quitButton.SetActive(true);
-           // board.SetActive(true);
-            //box.SetActive(true);
-            GGCB.SetActive(true);
-            HelloCB.SetActive(true);
+        // else if (newState == GameStates.OpponentPlay)
+        // {
+        //     Debug.Log("opponent play state");
+        //     //ticTacToeSquareButton.SetActive(false);
+        //     joinGameRoomButton.SetActive(false);
+        //     quitButton.SetActive(true);
+        //    // board.SetActive(true);
+        //     //box.SetActive(true);
+        //     GGCB.SetActive(true);
+        //     HelloCB.SetActive(true);
 
 
 
-        }
+        // }
 
-        else if (newState == GameStates.Win)
-        {
+        // else if (newState == GameStates.Win)
+        // {
 
-            quitButton.SetActive(true);
-           // board.SetActive(false);
-            //box.SetActive(false);
-            GGCB.SetActive(true);
-            HelloCB.SetActive(true);
-            ReplayButton.SetActive(true);
-            gameOverPanel.SetActive(true);
-            //gameOverText.SetActive(true);
+        //     quitButton.SetActive(true);
+        //    // board.SetActive(false);
+        //     //box.SetActive(false);
+        //     GGCB.SetActive(true);
+        //     HelloCB.SetActive(true);
+        //     ReplayButton.SetActive(true);
+        //     gameOverPanel.SetActive(true);
+        //     //gameOverText.SetActive(true);
 
 
 
-            joinGameRoomButton.SetActive(false);
-            submitButton.SetActive(false);
-            userNameInput.SetActive(false);
-            passwordInput.SetActive(false);
-            createToggle.SetActive(false);
-            loginToggle.SetActive(false);
+        //     joinGameRoomButton.SetActive(false);
+        //     submitButton.SetActive(false);
+        //     userNameInput.SetActive(false);
+        //     passwordInput.SetActive(false);
+        //     createToggle.SetActive(false);
+        //     loginToggle.SetActive(false);
 
-            textNameInfo.SetActive(false);
-            textPasswordInfo.SetActive(false);
+        //     textNameInfo.SetActive(false);
+        //     textPasswordInfo.SetActive(false);
 
-            joinGameRoomButton.SetActive(false);
-            //ticTacToeSquareButton.SetActive(false);
-        }
+        //     joinGameRoomButton.SetActive(false);
+        //     //ticTacToeSquareButton.SetActive(false);
+        // }
 
     }
 }
