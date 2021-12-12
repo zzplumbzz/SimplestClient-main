@@ -30,15 +30,15 @@ public class MessageScript : MonoBehaviour
 
         int signifier = int.Parse(csv[0]);
        
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",trying to send to both clients" + TextField1 + id);
+       // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",trying to send to both clients" + TextField1 + id);
 
        
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",trying to send to both clieents" + TextField1 + id);
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",trying to send to both clieents" + TextField1 + id);
 
-        if(signifier == ServerToClientSignifiers.SendGGButtonPressed || signifier == ServerToClientSignifiers.SendHelloButtonPressed)
-        {
-            TextField1.text = text;
-        }
+        // if(signifier == ServerToClientSignifiers.SendGGButtonPressed || signifier == ServerToClientSignifiers.SendHelloButtonPressed)
+        // {
+        //     TextField1.text = text;
+        // }
     }
 
     //private void Update()

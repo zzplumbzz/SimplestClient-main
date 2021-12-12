@@ -23,6 +23,7 @@ public class NetworkedClient : MonoBehaviour
     public Board boardScript;
     public Box boxScript;
     public MessageScript MS;
+    public string currentPlayer;
 
     // Start is called before the first frame update
     void Start()
@@ -143,39 +144,41 @@ public class NetworkedClient : MonoBehaviour
         {
             Debug.Log("GAME FINALLY STARTED!!!!!!!!!!!!!!!!!!!!!!!!");
             gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.TicTacToe);
-            if(signifier == ClientToServerSignifiers.BoxHitClient)
-            {
-                Debug.Log("Opponent Play!");
-            gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.OpponentPlay);
-            }
-            
+        }
+        else if(signifier == ServerToClientSignifiers.PlayerX)
+        {
+            currentPlayer = "X";
+        }
+        else if(signifier == ServerToClientSignifiers.PlayerO)
+        {
+            currentPlayer = "O";
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
             Debug.Log("Opponent Play!");
             gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.OpponentPlay);
         }
-        else if(signifier == ServerToClientSignifiers.Win)
-        {
-            gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.Win);
-        }
-        else if(signifier == ServerToClientSignifiers.SendHelloButtonPressed)
-        {
-            GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendHelloButtonPressed + ",Hello" + MS.TextField1);
-            GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoxHitClient + ",Hello");
-        }
-        else if (signifier == ServerToClientSignifiers.SendGGButtonPressed)
-        {
-            GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendGGButtonPressed + ",GoodGame");
-        }
-        else if(signifier == ClientToServerSignifiers.HelloButtonPressed)
-        {
-            GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",Hello!");
-        }
-        else if (signifier == ClientToServerSignifiers.GGButtonPressed)
-        {
-            GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",Good Game!");
-        }
+        // else if(signifier == ServerToClientSignifiers.Win)
+        // {
+        //     gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.Win);
+        // }
+        // else if(signifier == ServerToClientSignifiers.SendHelloButtonPressed)
+        // {
+        //     GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendHelloButtonPressed + ",Hello" + MS.TextField1);
+        //    // GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TTTButtonHitClient + ",Hello");
+        // }
+        // else if (signifier == ServerToClientSignifiers.SendGGButtonPressed)
+        // {
+        //     GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendGGButtonPressed + ",GoodGame");
+        // }
+        // else if(signifier == ClientToServerSignifiers.HelloButtonPressed)
+        // {
+        //     GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",Hello!");
+        // }
+        // else if (signifier == ClientToServerSignifiers.GGButtonPressed)
+        // {
+        //     GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",Good Game!");
+        // }
     }
 
     public bool IsConnected()
@@ -191,38 +194,31 @@ public class NetworkedClient : MonoBehaviour
 public static class ClientToServerSignifiers
 {
     public const int CreateAccount = 1;
-
     public const int Login = 2;
-
     public const int JoinQueueForGameRoom = 3;
-
     public const int TicTacToePlay = 4;
-    public const int BoxHitClient = 5;
-
+    public const int PlayerX = 5;
+    public const int PlayerO = 6;
+    public const int OpponentPlay = 7;
+    public const int YouWin = 8;
+    public const int YouLoose = 9;
+    public const int GameOver = 10;
     
-
-    public const int GGButtonPressed = 6;
-    public const int HelloButtonPressed = 7;
-    public const int SwitchTurnClient = 8;
 }
 
 public static class ServerToClientSignifiers
 {
     public const int LoginComplete = 11;
     public const int LoginFailed = 12;
-
-
     public const int AccountCreationComplete = 13;
     public const int AccountCreationFailed = 14;
     public const int GameStart = 15;
-    public const int PlayerTurn = 16;
-    public const int OpponentPlay = 17;
-    public const int BoxHitServer = 18;
-    public const int SpectatorJoined = 19;
-    public const int SendGGButtonPressed = 20;
-    public const int SendHelloButtonPressed = 21;
-    public const int SwitchTurnServer = 22;
-    public const int Win = 23;
+    public const int OpponentPlay = 16;
+    public const int PlayerX = 17;
+    public const int PlayerO = 18;
+    public const int YouWin = 19;
+    public const int YouLoose = 20;
+    public const int GameOver = 21;
 
 }
 

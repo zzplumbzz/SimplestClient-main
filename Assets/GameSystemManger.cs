@@ -6,12 +6,24 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO;
 
+[System.Serializable] public class Player
+{
+    public Image panel;
+    public Text text;
+    public Button button;
+}
+
+[System.Serializable] public class PlayerColor
+{
+    public Color PanelColor;
+    public Color textColor;
+}
 
 public class GameSystemManger : MonoBehaviour
 {
 
-    public Board boardScript;
-    public Box boxScript;
+    // public Board boardScript;
+    // public Box boxScript;
 
     GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle;
 
@@ -21,7 +33,7 @@ public class GameSystemManger : MonoBehaviour
 
     GameObject networkedClient;
 
-    GameObject ticTacToeSquareButton;
+    public GameObject restartButton;
 
     GameObject quitButton;
 
@@ -35,18 +47,56 @@ public class GameSystemManger : MonoBehaviour
     GameObject GGCB;
 
     GameObject ReplayButton;
-    GameObject winPanel;
-    GameObject gameOverText;
+    public GameObject gameOverPanel;
+   public Text gameOverText;
 
-public int playerID1;
-public int playerID2;
+    Text HelloTF;
+    Text GoodGameTF;
+    MessageScript MS;
+//tic tac toe stuff below
+    public Text[] buttonList;
+    private string currentPlayer;
+    GameObject TTTBoard;
+    GameObject Grid0;
+    GameObject Grid1;
+    GameObject Grid2;
+    GameObject Grid3;
+    GameObject GridSpace0;
+    GameObject GridSpace1;
+    GameObject GridSpace2;
+    GameObject GridSpace3;
+    GameObject GridSpace4;
+    GameObject GridSpace5;
+    GameObject GridSpace6;
+    GameObject GridSpace7;
+    GameObject GridSpace8;
+    GameObject PlayerX;
+    GameObject PlayerO;
+    GameObject StartInfo;
 
-    public Text HelloTF;
-    public Text GoodGameTF;
-    public MessageScript MS;
 
+    private int moveCount;
 
+    public Player playerX;
+    public Player playerO;
+    public PlayerColor activePlayerColor;
+    public PlayerColor inactivePlayerColor;
 
+    public GameObject startInfo;
+
+    public bool currentClientsTurn;
+    
+
+    void Awake()
+    {
+        SetGameSystemManagerReferanceOnButtons();
+        //currentPlayer = "X";
+        
+        gameOverPanel.SetActive(false);
+        moveCount = 0;
+
+        restartButton.SetActive(false);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -77,40 +127,77 @@ public int playerID2;
                 textNameInfo = go;
             else if (go.name == "Password")
                 textPasswordInfo = go;
-            else if (go.name == "TicTacToeSquareButton")
-                ticTacToeSquareButton = go;
+            else if (go.name == "RestartButton")
+                restartButton = go;
             else if (go.name == "QuitButton")
                 quitButton = go;
             else if (go.name == "MenuCanvas")
                 menuCanvas = go;
-            else if (go.name == "Board")
-                board = go;
-            else if (go.name == "Box")
-                box = go;
+            // else if (go.name == "Board")
+            //     board = go;
+            // else if (go.name == "Box")
+            //     box = go;
             else if (go.name == "HelloButton")
                 HelloCB = go;
             else if (go.name == "GGButton")
                 GGCB = go;
             else if (go.name == "ReplayButton")
                 ReplayButton = go;
-            else if (go.name == "WinPanel")
-                winPanel = go;
-            else if (go.name == "GameOverText")
-                gameOverText = go;
+            else if (go.name == "GameOverPanel")
+                gameOverPanel = go;
+            // else if (go.name == "GameOverText")
+            //     gameOverText = tx;
+                //ttt board
+                else if (go.name == "TTTBoard")
+                TTTBoard = go;
+                 else if (go.name == "Grid")
+                Grid0 = go;
+                 else if (go.name == "Grid1")
+                Grid1 = go;
+                 else if (go.name == "Grid2")
+                Grid2 = go;
+                 else if (go.name == "Grid3")
+                Grid3 = go;
+                else if (go.name == "GridSpace")
+                GridSpace0 = go;
+                else if (go.name == "GridSpace1")
+                GridSpace1 = go;
+                else if (go.name == "GridSpace2")
+                GridSpace2 = go;
+                else if (go.name == "GridSpace3")
+                GridSpace3 = go;
+                else if (go.name == "GridSpace4")
+                GridSpace4 = go;
+                else if (go.name == "GridSpace5")
+                GridSpace5 = go;
+                else if (go.name == "GridSpace6")
+                GridSpace6 = go;
+                else if (go.name == "GridSpace7")
+                GridSpace7 = go;
+                else if (go.name == "GridSpace8")
+                GridSpace8 = go;
+                else if (go.name == "PlayerX")
+                PlayerX = go;
+                else if (go.name == "PlayerO")
+                PlayerO = go;
+                else if (go.name == "StartInfo")
+                StartInfo = go;
 
 
 
         }
+
         //button listeners
         submitButton.GetComponent<Button>().onClick.AddListener(SubmitButtonPressed);
         loginToggle.GetComponent<Toggle>().onValueChanged.AddListener(LoginToggleChanged);
         createToggle.GetComponent<Toggle>().onValueChanged.AddListener(CreateToggleChanged);
         joinGameRoomButton.GetComponent<Button>().onClick.AddListener(JoinGameRoomButtonPressed);
-        ticTacToeSquareButton.GetComponent<Button>().onClick.AddListener(TicTacToeSquareButtonPressed);
+        restartButton.GetComponent<Button>().onClick.AddListener(RestartButtonPressed);
         quitButton.GetComponent<Button>().onClick.AddListener(QuitButtonPressed);
         HelloCB.GetComponent<Button>().onClick.AddListener(HelloCBPressed);
         GGCB.GetComponent<Button>().onClick.AddListener(GGCBPressed);
         ReplayButton.GetComponent<Button>().onClick.AddListener(ReplayButtonPressed);
+        
 
         ChangeState(GameStates.Login);
 
@@ -120,6 +207,263 @@ public int playerID2;
     void Update()
     {
 
+    }
+
+    void SetGameSystemManagerReferanceOnButtons()
+    {
+        for(int i = 0; i < buttonList.Length; i++)
+        {
+            //buttonList[i].GetComponent<GridSpace>().SetGameSystemManagerReferance(this);
+            buttonList[i].GetComponentInParent<GridSpace>().SetGameSystemManagerReferance(this);
+        }
+    }
+
+    public string GetCurrentPlayer()
+    {
+        return currentPlayer;
+        
+    }
+
+    public void EndTurn()//string winningPlayer
+    {
+        
+
+        moveCount++;
+        //win for rows
+       if (buttonList [0].text == currentPlayer && buttonList [1].text == currentPlayer && buttonList [2].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if (buttonList [3].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [5].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if (buttonList [6].text == currentPlayer && buttonList [7].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        //win for columns
+        else if (buttonList [0].text == currentPlayer && buttonList [3].text == currentPlayer && buttonList [6].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if (buttonList [1].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [7].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if (buttonList [2].text == currentPlayer && buttonList [5].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+        // win for diagonals
+        else if (buttonList [0].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if (buttonList [2].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [6].text == currentPlayer) 
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
+            GameOver(currentPlayer);//winningplayer was currentPlayer
+        }
+
+        else if(moveCount >= 9)
+        {
+            // gameOverPanel.SetActive(true);
+            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.Draw + ",Draw");
+            GameOver("draw");
+        }
+        else
+        {
+            
+           
+                ChangeSides();
+                
+               
+            
+
+            
+                
+            
+        }
+       
+    }
+
+    void ChangeSides()
+    {
+        currentPlayer = (currentPlayer == "X") ? "O" : "X";
+        if(currentPlayer == "X")
+        {
+            SetPlayerColors(playerX, playerO);
+            
+         
+        }
+        else
+        {
+            SetPlayerColors(playerO, playerX);
+            
+        }
+    }
+
+    public void UpdateGridSpace(int gridSpace, string currentPlayer)
+    {
+        //updates text for each button pressed
+        GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace3.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace4.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace5.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace6.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace7.GetComponentInChildren<Text>().text = currentPlayer;
+        GridSpace8.GetComponentInChildren<Text>().text = currentPlayer;
+
+        //makes the button pressed not interactable anymore
+        GridSpace0.GetComponent<Button>().interactable = false;
+        GridSpace1.GetComponent<Button>().interactable = false;
+        GridSpace2.GetComponent<Button>().interactable = false;
+        GridSpace3.GetComponent<Button>().interactable = false;
+        GridSpace4.GetComponent<Button>().interactable = false;
+        GridSpace5.GetComponent<Button>().interactable = false;
+        GridSpace6.GetComponent<Button>().interactable = false;
+        GridSpace7.GetComponent<Button>().interactable = false;
+        GridSpace8.GetComponent<Button>().interactable = false;
+        EndTurn();
+    }
+
+    void SetPlayerColors(Player newPlayer, Player oldPlayer)
+    {
+        newPlayer.panel.color = activePlayerColor.PanelColor; 
+        newPlayer.text.color = activePlayerColor.textColor; 
+        oldPlayer.panel.color = inactivePlayerColor.PanelColor; 
+        oldPlayer.text.color = inactivePlayerColor.textColor;
+
+    }
+
+    void GameOver(string winningPlayer)
+    {
+      
+        SetBoardInteractable(false);
+        if(winningPlayer == "draw")
+        {
+            
+            SetGameOverText("Its A Draw!");
+            SetPlayerColorsInactive();
+            
+        }
+        else
+        {
+            SetGameOverText(winningPlayer + " Wins!");
+           // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.Win + ",Wins");
+        }
+        //SetGameOverText(currentPlayer + " Wins!");
+        //Debug.Log("SomeOne won!");
+
+        restartButton.SetActive(true);
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+    }
+
+    void SetGameOverText(string value)
+    {
+        gameOverPanel.SetActive(true);
+        gameOverText.text = value;
+    }
+
+    public void RestartGame()
+    {
+        //currentPlayer = "X";
+        moveCount = 0;
+        gameOverPanel.SetActive(false);
+        restartButton.SetActive(false);
+        SetPlayerButtons(true);
+        startInfo.SetActive(true);
+        //SetPlayerColors(playerX, playerO);
+        //SetBoardInteractable(true);
+
+        SetPlayerColorsInactive();
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+        for (int i = 0; i < buttonList.Length; i++)
+        {
+            //buttonList[i].GetComponentInParent<Button>().interactable = true;
+            buttonList [i].text = ""; 
+        }
+
+        
+    }
+
+    void SetBoardInteractable(bool toggle)
+    {
+        for (int i = 0; i < buttonList.Length; i++)
+        {
+            buttonList[i].GetComponentInParent<Button>().interactable = toggle;
+        }
+    }
+
+    public void SetStartingSide (string startingPlayer) 
+    { 
+        currentPlayer = startingPlayer; 
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "starting player");
+        if (currentPlayer == "X") 
+        {
+            SetPlayerColors(playerX, playerO); 
+            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
+        } 
+        else 
+        {
+            SetPlayerColors(playerO, playerX); 
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
+        }
+
+        StartGame();
+    }
+
+    void StartGame()
+    {
+        SetBoardInteractable(true);
+        SetPlayerButtons(false);
+        startInfo.SetActive(false);
+        
+    }
+
+    void SetPlayerButtons (bool toggle) 
+    {
+        playerX.button.interactable = toggle; 
+        playerO.button.interactable = toggle;
+        if(playerX.button.interactable = toggle)
+        {
+            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
+            playerO.button.interactable = false;
+        }
+        else if(playerO.button.interactable = toggle)
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
+            playerX.button.interactable = false;
+        }
+        
+        
+       // SetPlayerButtons (false);
+    }
+
+    void SetPlayerColorsInactive()
+    {
+        playerX.panel.color = inactivePlayerColor.PanelColor; 
+        playerX.text.color = inactivePlayerColor.textColor; 
+        playerO.panel.color = inactivePlayerColor.PanelColor; 
+        playerO.text.color = inactivePlayerColor.textColor;
+
+        
     }
 
     public void SubmitButtonPressed()
@@ -166,11 +510,11 @@ public int playerID2;
         ChangeState(GameStates.WaitingForMatch);
 
     }
-    private void TicTacToeSquareButtonPressed()
+    private void RestartButtonPressed()
     {
-        Debug.Log(",Tic tac toe button pressed");
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "");
-        ChangeState(GameStates.TicTacToe);
+        // Debug.Log(",Tic tac toe button pressed");
+        // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "");
+        // ChangeState(GameStates.TicTacToe);
 
 
     }
@@ -186,17 +530,17 @@ public int playerID2;
 
         // int signifier = int.Parse(csv[0]);
 
-        Debug.Log(",Hello");
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",Chazz says hi?");
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendHelloButtonPressed + ",Hi ChadS");
+        Debug.Log("Hello");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",Chazz says hi?");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendHelloButtonPressed + ",Hi ChadS");
     }
 
     public void GGCBPressed()// when button pressed send to server to send to other client
     {
     
         //GoodGameTF.text = text;
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",Good Game host");
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendGGButtonPressed + ",GoogGame");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",Good Game host");
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendGGButtonPressed + ",GoogGame");
         Debug.Log("Good Game!");
 
 
@@ -218,16 +562,35 @@ public int playerID2;
         textNameInfo.SetActive(false);
         textPasswordInfo.SetActive(false);
         joinGameRoomButton.SetActive(false);
-        ticTacToeSquareButton.SetActive(false);
+        restartButton.SetActive(false);
         quitButton.SetActive(false);
         menuCanvas.SetActive(false);
-        board.SetActive(false);
-        box.SetActive(false);
+        //board.SetActive(false);
+       // box.SetActive(false);
         HelloCB.SetActive(false);
         GGCB.SetActive(false);
         ReplayButton.SetActive(false);
-        winPanel.SetActive(false);
-        gameOverText.SetActive(false);
+        gameOverPanel.SetActive(false);
+        //gameOverText.SetActive(false);
+        //TTTBoard stuff
+        TTTBoard.SetActive(false);
+        Grid0.SetActive(false);
+        Grid1.SetActive(false);
+        Grid2.SetActive(false);
+        Grid3.SetActive(false);
+        GridSpace0.SetActive(false);
+        GridSpace1.SetActive(false);
+        GridSpace2.SetActive(false);
+        GridSpace3.SetActive(false);
+        GridSpace4.SetActive(false);
+        GridSpace5.SetActive(false);
+        GridSpace6.SetActive(false);
+        GridSpace7.SetActive(false);
+        GridSpace8.SetActive(false);
+        PlayerX.SetActive(false);
+        PlayerO.SetActive(false);
+        StartInfo.SetActive(false);
+
 
 
         if (newState == GameStates.Login)
@@ -242,6 +605,29 @@ public int playerID2;
             menuCanvas.SetActive(true);
             textNameInfo.SetActive(true);
             textPasswordInfo.SetActive(true);
+
+             //board.SetActive(false);
+        //box.SetActive(false);
+        HelloCB.SetActive(false);
+        GGCB.SetActive(false);
+        ReplayButton.SetActive(false);
+        gameOverPanel.SetActive(false);
+        //gameOverText.SetActive(false);
+
+            TTTBoard.SetActive(false);
+        Grid0.SetActive(false);
+        Grid1.SetActive(false);
+        Grid2.SetActive(false);
+        Grid3.SetActive(false);
+        GridSpace0.SetActive(false);
+        GridSpace1.SetActive(false);
+        GridSpace2.SetActive(false);
+        GridSpace3.SetActive(false);
+        GridSpace4.SetActive(false);
+        GridSpace5.SetActive(false);
+        GridSpace6.SetActive(false);
+        GridSpace7.SetActive(false);
+        GridSpace8.SetActive(false);
 
         }
         else if (newState == GameStates.MainMenu)
@@ -266,12 +652,28 @@ public int playerID2;
         {
 
             Debug.Log("In Game state");
-            ticTacToeSquareButton.SetActive(false);
+            //ticTacToeSquareButton.SetActive(false);
             quitButton.SetActive(true);
-            board.SetActive(true);
-            box.SetActive(true);
             GGCB.SetActive(true);
             HelloCB.SetActive(true);
+
+            TTTBoard.SetActive(true);
+            Grid0.SetActive(true);
+            Grid1.SetActive(true);
+            Grid2.SetActive(true);
+            Grid3.SetActive(true);
+            GridSpace0.SetActive(true);
+            GridSpace1.SetActive(true);
+            GridSpace2.SetActive(true);
+            GridSpace3.SetActive(true);
+            GridSpace4.SetActive(true);
+            GridSpace5.SetActive(true);
+            GridSpace6.SetActive(true);
+            GridSpace7.SetActive(true);
+            GridSpace8.SetActive(true);
+            PlayerX.SetActive(true);
+            PlayerO.SetActive(true);
+            StartInfo.SetActive(true);
 
 
             joinGameRoomButton.SetActive(false);
@@ -290,11 +692,11 @@ public int playerID2;
         else if (newState == GameStates.OpponentPlay)
         {
             Debug.Log("opponent play state");
-            ticTacToeSquareButton.SetActive(false);
+            //ticTacToeSquareButton.SetActive(false);
             joinGameRoomButton.SetActive(false);
             quitButton.SetActive(true);
-            board.SetActive(true);
-            box.SetActive(true);
+           // board.SetActive(true);
+            //box.SetActive(true);
             GGCB.SetActive(true);
             HelloCB.SetActive(true);
 
@@ -306,13 +708,13 @@ public int playerID2;
         {
 
             quitButton.SetActive(true);
-            board.SetActive(false);
-            box.SetActive(false);
+           // board.SetActive(false);
+            //box.SetActive(false);
             GGCB.SetActive(true);
             HelloCB.SetActive(true);
             ReplayButton.SetActive(true);
-            winPanel.SetActive(true);
-            gameOverText.SetActive(true);
+            gameOverPanel.SetActive(true);
+            //gameOverText.SetActive(true);
 
 
 
@@ -327,7 +729,7 @@ public int playerID2;
             textPasswordInfo.SetActive(false);
 
             joinGameRoomButton.SetActive(false);
-            ticTacToeSquareButton.SetActive(false);
+            //ticTacToeSquareButton.SetActive(false);
         }
 
     }

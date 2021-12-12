@@ -168,7 +168,7 @@ public class Board : MonoBehaviour
     {
         if (box.isMarked)
         {
-           networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoxHitClient + ",Box marked!!");
+          // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoxHitClient + ",Box marked!!");
         }
     }
 
