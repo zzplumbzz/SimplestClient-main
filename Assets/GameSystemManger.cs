@@ -311,9 +311,9 @@ public class GameSystemManger : MonoBehaviour
         {
             Debug.Log("Player X TURN");
             SetPlayerColors(playerX, playerO);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
+            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
+            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
+            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
             if(currentPlayer != "X")
             {
             SetBoardInteractable(false);
@@ -323,8 +323,8 @@ public class GameSystemManger : MonoBehaviour
         {
             Debug.Log("Player O TURN");
             SetPlayerColors(playerO, playerX);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
+            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
+            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
             if(currentPlayer != "O")
             {
             SetBoardInteractable(false);
