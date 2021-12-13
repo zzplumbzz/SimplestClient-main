@@ -298,20 +298,30 @@ public class GameSystemManger : MonoBehaviour
         if(currentPlayer == "X")
         {
             SetPlayerColors(playerX, playerO);
-            
-         
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
+            if(currentPlayer != "X")
+            {
+            SetBoardInteractable(false);
+            }
         }
         else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX);
-            
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
+            if(currentPlayer != "O")
+            {
+            SetBoardInteractable(false);
+            }
         }
     }
 
     public void UpdateGridSpace(int gridSpace, string currentPlayer)
     {
         //updates text for each button pressed
-        buttonList[gridSpace].GetComponent<Text>().text = currentPlayer;
+        buttonList[gridSpace].GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
@@ -419,12 +429,13 @@ public class GameSystemManger : MonoBehaviour
         if (currentPlayer == "X") 
         {
             SetPlayerColors(playerX, playerO); 
-            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
+            //PlayerO = SetBoardInteractable(false);
         } 
-        else 
+        else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX); 
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "player O turn?");
         }
 
         StartGame();

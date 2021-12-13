@@ -39,7 +39,8 @@ public class GridSpace : MonoBehaviour
         // gameSystemManger.GridSpace6.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace7.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace8.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.buttonList[gridSpace].GetComponent<Text>().text = gameSystemManger.currentPlayer;
+       // gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        //gameSystemManger.buttonList[gridSpace].GetComponent<Button>().interactable = false;
         //makes the button pressed not interactable anymore
         // gameSystemManger.GridSpace0.GetComponent<Button>().interactable = false;
         // gameSystemManger.GridSpace1.GetComponent<Button>().interactable = false;
@@ -50,11 +51,14 @@ public class GridSpace : MonoBehaviour
         // gameSystemManger.GridSpace6.GetComponent<Button>().interactable = false;
         // gameSystemManger.GridSpace7.GetComponent<Button>().interactable = false;
         // gameSystemManger.GridSpace8.GetComponent<Button>().interactable = false;
+    
 
         buttonText.text = gameSystemManger.GetCurrentPlayer();
         button.interactable = false;
         gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + "," + gridSpace + "," + gameSystemManger.currentPlayer);
+        
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + gridSpace + "," + gameSystemManger.currentPlayer);
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + gridSpace + "," + gameSystemManger.currentPlayer);
 
         
         
