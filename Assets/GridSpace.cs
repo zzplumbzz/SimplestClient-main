@@ -29,31 +29,33 @@ public class GridSpace : MonoBehaviour
 
     public void SetSpace(int gridSpace)
     {
-        // buttonText.text = gameSystemManger.GetCurrentPlayer();
-        // button.interactable = false;
-        // gameSystemManger.EndTurn();
-        // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + "," + gridSpace + "," + currentPlayer);
-
-        gameSystemManger.GridSpace0.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace1.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace2.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace3.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace4.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace5.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace6.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace7.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        gameSystemManger.GridSpace8.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-
+        gameSystemManger.buttonList[gridSpace].GetComponent<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace0.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace1.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace2.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace3.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace4.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace5.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace6.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace7.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        // gameSystemManger.GridSpace8.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+        gameSystemManger.buttonList[gridSpace].GetComponent<Text>().text = gameSystemManger.currentPlayer;
         //makes the button pressed not interactable anymore
-        gameSystemManger.GridSpace0.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace1.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace2.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace3.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace4.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace5.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace6.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace7.GetComponent<Button>().interactable = false;
-        gameSystemManger.GridSpace8.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace0.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace1.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace2.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace3.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace4.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace5.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace6.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace7.GetComponent<Button>().interactable = false;
+        // gameSystemManger.GridSpace8.GetComponent<Button>().interactable = false;
+
+        buttonText.text = gameSystemManger.GetCurrentPlayer();
+        button.interactable = false;
+        gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + "," + gridSpace + "," + gameSystemManger.currentPlayer);
+
         
         
     }

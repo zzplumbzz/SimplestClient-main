@@ -224,86 +224,77 @@ public class GameSystemManger : MonoBehaviour
         
     }
 
-    public void EndTurn()//string winningPlayer
+    public void EndTurn(string winningPlayer)
     {
         
 
         moveCount++;
         //win for rows
-       if (buttonList [0].text == currentPlayer && buttonList [1].text == currentPlayer && buttonList [2].text == currentPlayer) 
+       if (buttonList[0].GetComponentInChildren<Text>().text == currentPlayer && buttonList[1].GetComponentInChildren<Text>().text == currentPlayer && buttonList[2].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
-        else if (buttonList [3].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [5].text == currentPlayer) 
+        else if (buttonList [3].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [5].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
-        else if (buttonList [6].text == currentPlayer && buttonList [7].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        else if (buttonList [6].GetComponentInChildren<Text>().text == currentPlayer && buttonList [7].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
         //win for columns
-        else if (buttonList [0].text == currentPlayer && buttonList [3].text == currentPlayer && buttonList [6].text == currentPlayer) 
+        else if (buttonList [0].GetComponentInChildren<Text>().text == currentPlayer && buttonList [3].GetComponentInChildren<Text>().text == currentPlayer && buttonList [6].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
-        else if (buttonList [1].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [7].text == currentPlayer) 
+        else if (buttonList [1].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [7].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
-        else if (buttonList [2].text == currentPlayer && buttonList [5].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        else if (buttonList [2].GetComponentInChildren<Text>().text == currentPlayer && buttonList [5].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
         // win for diagonals
-        else if (buttonList [0].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [8].text == currentPlayer) 
+        else if (buttonList [0].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
-        else if (buttonList [2].text == currentPlayer && buttonList [4].text == currentPlayer && buttonList [6].text == currentPlayer) 
+        else if (buttonList [2].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [6].GetComponentInChildren<Text>().text == currentPlayer) 
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + currentPlayer);
-            GameOver(currentPlayer);//winningplayer was currentPlayer
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
+            GameOver(winningPlayer);//winningplayer was currentPlayer
         }
 
         else if(moveCount >= 9)
         {
-            // gameOverPanel.SetActive(true);
-            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.Draw + ",Draw");
+            
             GameOver("draw");
         }
-        else
-        {
+       
             
            
-                ChangeSides();
-                
-               
-            
-
-            
-                
-            
-        }
+        ChangeSides();
+        
        
     }
 
     void ChangeSides()
     {
-        currentPlayer = (currentPlayer == "X") ? "O" : "X";
+        //currentPlayer = (currentPlayer == "X") ? "O" : "X";
         if(currentPlayer == "X")
         {
             SetPlayerColors(playerX, playerO);
@@ -320,27 +311,28 @@ public class GameSystemManger : MonoBehaviour
     public void UpdateGridSpace(int gridSpace, string currentPlayer)
     {
         //updates text for each button pressed
-        GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace3.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace4.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace5.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace6.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace7.GetComponentInChildren<Text>().text = currentPlayer;
-        GridSpace8.GetComponentInChildren<Text>().text = currentPlayer;
-
+        buttonList[gridSpace].GetComponent<Text>().text = currentPlayer;
+        // GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace3.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace4.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace5.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace6.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace7.GetComponentInChildren<Text>().text = currentPlayer;
+        // GridSpace8.GetComponentInChildren<Text>().text = currentPlayer;
+        buttonList[gridSpace].GetComponent<Button>().interactable = false;
         //makes the button pressed not interactable anymore
-        GridSpace0.GetComponent<Button>().interactable = false;
-        GridSpace1.GetComponent<Button>().interactable = false;
-        GridSpace2.GetComponent<Button>().interactable = false;
-        GridSpace3.GetComponent<Button>().interactable = false;
-        GridSpace4.GetComponent<Button>().interactable = false;
-        GridSpace5.GetComponent<Button>().interactable = false;
-        GridSpace6.GetComponent<Button>().interactable = false;
-        GridSpace7.GetComponent<Button>().interactable = false;
-        GridSpace8.GetComponent<Button>().interactable = false;
-        EndTurn();//(currentPlayer)
+        // GridSpace0.GetComponent<Button>().interactable = false;
+        // GridSpace1.GetComponent<Button>().interactable = false;
+        // GridSpace2.GetComponent<Button>().interactable = false;
+        // GridSpace3.GetComponent<Button>().interactable = false;
+        // GridSpace4.GetComponent<Button>().interactable = false;
+        // GridSpace5.GetComponent<Button>().interactable = false;
+        // GridSpace6.GetComponent<Button>().interactable = false;
+        // GridSpace7.GetComponent<Button>().interactable = false;
+        // GridSpace8.GetComponent<Button>().interactable = false;
+        EndTurn(currentPlayer);
     }
 
     void SetPlayerColors(Player newPlayer, Player oldPlayer)
@@ -352,10 +344,14 @@ public class GameSystemManger : MonoBehaviour
 
     }
 
-    void GameOver(string winningPlayer)
+    public void GameOver(string winningPlayer)
     {
-      
-        SetBoardInteractable(false);
+      for (int i = 0; i < buttonList.Length; i++)
+      {
+          SetBoardInteractable(false);
+      }
+      gameOverPanel.SetActive(true);
+        //SetBoardInteractable(false);
         if(winningPlayer == "draw")
         {
             
@@ -371,7 +367,7 @@ public class GameSystemManger : MonoBehaviour
         //SetGameOverText(currentPlayer + " Wins!");
         //Debug.Log("SomeOne won!");
 
-        restartButton.SetActive(true);
+        //restartButton.SetActive(true);
         //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
     }
 
@@ -386,19 +382,24 @@ public class GameSystemManger : MonoBehaviour
         //currentPlayer = "X";
         moveCount = 0;
         gameOverPanel.SetActive(false);
-        restartButton.SetActive(false);
-        SetPlayerButtons(true);
-        startInfo.SetActive(true);
+        //restartButton.SetActive(false);
+        //SetPlayerButtons(true);
+        //startInfo.SetActive(true);
+        SetPlayerColors(playerX, playerO);
         //SetPlayerColors(playerX, playerO);
         //SetBoardInteractable(true);
-
-        SetPlayerColorsInactive();
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
-        for (int i = 0; i < buttonList.Length; i++)
+        for(int i = 0; i < buttonList.Length; i++)
         {
-            //buttonList[i].GetComponentInParent<Button>().interactable = true;
-            buttonList [i].text = ""; 
+            buttonList[i].text = "";
         }
+
+        //SetPlayerColorsInactive();
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+        // for (int i = 0; i < buttonList.Length; i++)
+        // {
+        //     //buttonList[i].GetComponentInParent<Button>().interactable = true;
+        //     buttonList [i].text = ""; 
+        // }
 
         
     }
@@ -432,8 +433,8 @@ public class GameSystemManger : MonoBehaviour
     void StartGame()
     {
         SetBoardInteractable(true);
-        SetPlayerButtons(false);
-        startInfo.SetActive(false);
+        //SetPlayerButtons(false);
+        //startInfo.SetActive(false);
         
     }
 

@@ -156,7 +156,11 @@ public class NetworkedClient : MonoBehaviour
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
             Debug.Log("Opponent Play!");
-            gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.OpponentPlay);
+            gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+        }
+        else if(signifier == ServerToClientSignifiers.GameOver)
+        {
+            gameSystemManger.GetComponent<GameSystemManger>().GameOver(csv[1]);
         }
         // else if(signifier == ServerToClientSignifiers.Win)
         // {
