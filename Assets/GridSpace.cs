@@ -29,6 +29,7 @@ public class GridSpace : MonoBehaviour
 
     public void SetSpace(int gridSpace)
     {
+        Debug.Log("Space has been set!");
         gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace0.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace1.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
@@ -59,7 +60,7 @@ public class GridSpace : MonoBehaviour
         
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + gridSpace + "," + gameSystemManger.currentPlayer);
         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + gridSpace + "," + gameSystemManger.currentPlayer);
-
+Debug.Log("End Of Space has been set!");
         
         
     }

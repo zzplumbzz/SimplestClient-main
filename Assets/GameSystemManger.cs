@@ -220,12 +220,14 @@ public class GameSystemManger : MonoBehaviour
 
     public string GetCurrentPlayer()
     {
+        Debug.Log("Getting current player");
         return currentPlayer;
         
     }
 
     public void EndTurn(string winningPlayer)
     {
+        Debug.Log("Turn should End?");
         
 
         moveCount++;
@@ -234,18 +236,21 @@ public class GameSystemManger : MonoBehaviour
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 0, 1, 2!");
         }
 
         else if (buttonList [3].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [5].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 3, 4, 5!");
         }
 
         else if (buttonList [6].GetComponentInChildren<Text>().text == currentPlayer && buttonList [7].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 6, 7, 8!");
         }
 
         //win for columns
@@ -253,50 +258,58 @@ public class GameSystemManger : MonoBehaviour
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 0, 3, 6!");
         }
 
         else if (buttonList [1].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [7].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 1, 4, 7!");
         }
 
         else if (buttonList [2].GetComponentInChildren<Text>().text == currentPlayer && buttonList [5].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 2, 5, 8!");
         }
         // win for diagonals
         else if (buttonList [0].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [8].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 0, 4, 8!");
         }
 
         else if (buttonList [2].GetComponentInChildren<Text>().text == currentPlayer && buttonList [4].GetComponentInChildren<Text>().text == currentPlayer && buttonList [6].GetComponentInChildren<Text>().text == currentPlayer) 
         {
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GameOver + "," + winningPlayer);
             GameOver(winningPlayer);//winningplayer was currentPlayer
+            Debug.Log(winningPlayer + "won with 2, 4, 6!");
         }
 
         else if(moveCount >= 9)
         {
             
             GameOver("draw");
+            //Debug.Log(GameOver + "Draw");
         }
        
             
            
         ChangeSides();
-        
+        Debug.Log("Change sides?? at the end of end turn!!!!!!!");
        
     }
 
     void ChangeSides()
     {
+        Debug.Log("Change sides?? function start");
         //currentPlayer = (currentPlayer == "X") ? "O" : "X";
         if(currentPlayer == "X")
         {
+            Debug.Log("Player X TURN");
             SetPlayerColors(playerX, playerO);
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
@@ -308,6 +321,7 @@ public class GameSystemManger : MonoBehaviour
         }
         else if(currentPlayer == "O")
         {
+            Debug.Log("Player O TURN");
             SetPlayerColors(playerO, playerX);
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
@@ -320,6 +334,7 @@ public class GameSystemManger : MonoBehaviour
 
     public void UpdateGridSpace(int gridSpace, string currentPlayer)
     {
+        Debug.Log("Update grid space start of function!!!");
         //updates text for each button pressed
         buttonList[gridSpace].GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
@@ -342,6 +357,7 @@ public class GameSystemManger : MonoBehaviour
         // GridSpace6.GetComponent<Button>().interactable = false;
         // GridSpace7.GetComponent<Button>().interactable = false;
         // GridSpace8.GetComponent<Button>().interactable = false;
+        Debug.Log("Update grid space ending turn!");
         EndTurn(currentPlayer);
     }
 

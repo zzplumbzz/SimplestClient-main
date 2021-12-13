@@ -148,12 +148,12 @@ public class NetworkedClient : MonoBehaviour
         else if(signifier == ServerToClientSignifiers.PlayerX)
         {
             currentPlayer = "X";
-           gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+           //gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
         }
         else if(signifier == ServerToClientSignifiers.PlayerO)
         {
             currentPlayer = "O";
-            gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+            //gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
