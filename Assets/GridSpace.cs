@@ -29,7 +29,7 @@ public class GridSpace : MonoBehaviour
 
     public void SetSpace(int gridSpace)
     {
-        gameSystemManger.buttonList[gridSpace].GetComponent<Text>().text = gameSystemManger.currentPlayer;
+        gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace0.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace1.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
         // gameSystemManger.GridSpace2.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;

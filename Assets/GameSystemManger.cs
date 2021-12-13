@@ -301,7 +301,7 @@ public class GameSystemManger : MonoBehaviour
             
          
         }
-        else
+        else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX);
             
@@ -367,7 +367,7 @@ public class GameSystemManger : MonoBehaviour
         //SetGameOverText(currentPlayer + " Wins!");
         //Debug.Log("SomeOne won!");
 
-        //restartButton.SetActive(true);
+        restartButton.SetActive(true);
         //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
     }
 
@@ -387,7 +387,7 @@ public class GameSystemManger : MonoBehaviour
         //startInfo.SetActive(true);
         SetPlayerColors(playerX, playerO);
         //SetPlayerColors(playerX, playerO);
-        //SetBoardInteractable(true);
+        SetBoardInteractable(true);
         for(int i = 0; i < buttonList.Length; i++)
         {
             buttonList[i].text = "";
@@ -450,24 +450,24 @@ public class GameSystemManger : MonoBehaviour
         }
     }
 
-    void SetPlayerButtons (bool toggle) 
-    {
-        playerX.button.interactable = toggle; 
-        playerO.button.interactable = toggle;
-        if(playerX.button.interactable = toggle)
-        {
-            //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
-            playerO.button.interactable = false;
-        }
-        else if(playerO.button.interactable = toggle)
-        {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
-            playerX.button.interactable = false;
-        }
+    // void SetPlayerButtons (bool toggle) 
+    // {
+    //     playerX.button.interactable = toggle; 
+    //     playerO.button.interactable = toggle;
+    //     if(playerX.button.interactable == true)//was = toggle
+    //     {
+    //         //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
+    //         playerO.button.interactable = false;
+    //     }
+    //     else if(playerO.button.interactable == true)//was = toggle
+    //     {
+    //         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
+    //         playerX.button.interactable = false;
+    //     }
         
         
-       // SetPlayerButtons (false);
-    }
+    //    // SetPlayerButtons (false);
+    // }
 
     void SetPlayerColorsInactive()
     {
