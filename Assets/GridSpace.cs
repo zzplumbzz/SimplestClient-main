@@ -29,39 +29,58 @@ public class GridSpace : MonoBehaviour
 
     public void SetSpace(int gridSpace)
     {
-        Debug.Log("Space has been set!");
-        gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace0.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace1.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace2.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace3.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace4.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace5.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace6.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace7.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        // gameSystemManger.GridSpace8.GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-       // gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
-        //gameSystemManger.buttonList[gridSpace].GetComponent<Button>().interactable = false;
-        //makes the button pressed not interactable anymore
-        // gameSystemManger.GridSpace0.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace1.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace2.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace3.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace4.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace5.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace6.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace7.GetComponent<Button>().interactable = false;
-        // gameSystemManger.GridSpace8.GetComponent<Button>().interactable = false;
-    
+        if(gameSystemManger.currentPlayer == "X")
+        {
+             Debug.Log("PLAYER ID" + gameSystemManger.playerID1);
+             gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+             //gameSystemManger.buttonList[gridSpace].GetComponent<Button>().interactable = false;
+            buttonText.text = gameSystemManger.GetCurrentPlayer();
+            button.interactable = false;
+            gameSystemManger.ChangeSides();
+            gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + ", Should be PLAYER O's TURN NOW");
+             
 
-        buttonText.text = gameSystemManger.GetCurrentPlayer();
-        button.interactable = false;
-        gameSystemManger.ChangeSides();
-        gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
+          // gameSystemManger.currentPlayer = "O";
+           //gameSystemManger.currentPlayer = gameSystemManger.playerID2;
+
+           if(gameSystemManger.currentPlayer == "O")
+           {
+               gameSystemManger.SetBoardInteractable(true);
+               gameSystemManger.currentPlayer = "X";
+           }
+           else  if(gameSystemManger.currentPlayer == "X")
+           {
+               gameSystemManger.currentPlayer = "O";
+               gameSystemManger.SetBoardInteractable(false);
+           }
+        }
+        else if(gameSystemManger.currentPlayer == "O")
+        {
+             Debug.Log("PLAYER ID" + gameSystemManger.playerID1);
+             gameSystemManger.buttonList[gridSpace].GetComponentInChildren<Text>().text = gameSystemManger.currentPlayer;
+            buttonText.text = gameSystemManger.GetCurrentPlayer();
+            button.interactable = false;
+            gameSystemManger.ChangeSides();
+            gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
+
+          // gameSystemManger.currentPlayer = "O";
+           //gameSystemManger.currentPlayer = gameSystemManger.playerID2;
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + ", Should be PLAYER X's TURN NOW");
+           if(gameSystemManger.currentPlayer == "O")
+           {
+               gameSystemManger.currentPlayer = "X";
+               gameSystemManger.SetBoardInteractable(false);
+           }
+           else  if(gameSystemManger.currentPlayer == "X")
+           {
+               gameSystemManger.currentPlayer = "O";
+               gameSystemManger.SetBoardInteractable(true);
+           }
+        }
         
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + gridSpace + "," + gameSystemManger.currentPlayer);
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + gridSpace + "," + gameSystemManger.currentPlayer);
-Debug.Log("End Of Space has been set!");
+        
+        
         
         
     }

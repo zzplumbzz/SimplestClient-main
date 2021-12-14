@@ -74,6 +74,9 @@ public class GameSystemManger : MonoBehaviour
     public GameObject PlayerO;
     public GameObject StartInfo;
 
+    public string playerID1;
+    public string playerID2;
+
 
     private int moveCount;
 
@@ -90,7 +93,7 @@ public class GameSystemManger : MonoBehaviour
     void Awake()
     {
         SetGameSystemManagerReferanceOnButtons();
-        //currentPlayer = "X";
+        currentPlayer = playerID1;
         
         gameOverPanel.SetActive(false);
         moveCount = 0;
@@ -434,7 +437,7 @@ public class GameSystemManger : MonoBehaviour
         
     }
 
-    void SetBoardInteractable(bool toggle)
+    public void SetBoardInteractable(bool toggle)
     {
         for (int i = 0; i < buttonList.Length; i++)
         {
@@ -449,25 +452,26 @@ public class GameSystemManger : MonoBehaviour
         //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "starting player");
         if (currentPlayer == "X") 
         {
+           
             SetPlayerColors(playerX, playerO); 
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "Player X turn?");
-            if(currentPlayer != "X")
-            {
-                SetBoardInteractable(false);
-                PlayerX.SetActive(false);
+            networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
+            // if(currentPlayer != "X")
+            // {
+            //     SetBoardInteractable(false);
+            //     PlayerX.SetActive(false);
 
-            }
+            // }
             
         } 
         else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX); 
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "player O turn?");
-            if(currentPlayer != "O")
-            {
-                SetBoardInteractable(false);
-                PlayerO.SetActive(false);
-            }
+            // if(currentPlayer != "O")
+            // {
+            //     SetBoardInteractable(false);
+            //     PlayerO.SetActive(false);
+            // }
             
         }
 

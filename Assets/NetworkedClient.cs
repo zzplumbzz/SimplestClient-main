@@ -20,9 +20,9 @@ public class NetworkedClient : MonoBehaviour
     int ourClientID;
 
     GameObject gameSystemManger;
-    public Board boardScript;
-    public Box boxScript;
-    public MessageScript MS;
+ 
+    public string playerX;
+    public string playerO;
     public string currentPlayer;
 
     // Start is called before the first frame update
@@ -142,18 +142,26 @@ public class NetworkedClient : MonoBehaviour
         }
         else if (signifier == ServerToClientSignifiers.GameStart)
         {
+            int WhichPlayersTurn = int.Parse(csv[0]);
+            Debug.Log("Check " + WhichPlayersTurn );
+            //gameSystemManger.GetComponent<GameSystemManger>().currentPlayer = "" + int.Parse(csv[0]);
+            Debug.Log("Starting player: " + gameSystemManger.GetComponent<GameSystemManger>().currentPlayer);
             Debug.Log("GAME FINALLY STARTED!!!!!!!!!!!!!!!!!!!!!!!!");
+            gameSystemManger.GetComponent<GameSystemManger>().playerID1 = "X";
+            gameSystemManger.GetComponent<GameSystemManger>().playerID2 = "O";
             gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.TicTacToe);
+            
         }
         else if(signifier == ServerToClientSignifiers.PlayerXTurn)
         {
-            currentPlayer = "X";
-           SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "");
+           // currentPlayer = "X";
+           
+           SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + ",PLayer X turn!");
         }
         else if(signifier == ServerToClientSignifiers.PlayerOTurn)
         {
-            currentPlayer = "O";
-            SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "");
+            
+            SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + ",PLayer X turn!");
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
@@ -219,6 +227,8 @@ public static class ClientToServerSignifiers
     public const int GameOver = 9;
     public const int RestartGame = 10;
     
+    
+
 
 }
 
