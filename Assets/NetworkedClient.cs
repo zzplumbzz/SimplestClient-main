@@ -145,15 +145,15 @@ public class NetworkedClient : MonoBehaviour
             Debug.Log("GAME FINALLY STARTED!!!!!!!!!!!!!!!!!!!!!!!!");
             gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.TicTacToe);
         }
-        else if(signifier == ServerToClientSignifiers.PlayerX)
+        else if(signifier == ServerToClientSignifiers.PlayerXTurn)
         {
             currentPlayer = "X";
-           //gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+           SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "");
         }
-        else if(signifier == ServerToClientSignifiers.PlayerO)
+        else if(signifier == ServerToClientSignifiers.PlayerOTurn)
         {
             currentPlayer = "O";
-            //gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+            SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "");
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
@@ -212,8 +212,8 @@ public static class ClientToServerSignifiers
     public const int Login = 2;
     public const int JoinQueueForGameRoom = 3;
     public const int TicTacToePlay = 4;
-    public const int PlayerX = 5;
-    public const int PlayerO = 6;
+    public const int PlayerXTurn = 5;
+    public const int PlayerOTurn = 6;
     public const int OpponentPlay = 7;
     public const int GridSpaceButtonPressed = 8;
     public const int GameOver = 9;
@@ -230,8 +230,8 @@ public static class ServerToClientSignifiers
     public const int AccountCreationFailed = 14;
     public const int GameStart = 15;
     public const int OpponentPlay = 16;
-    public const int PlayerX = 17;
-    public const int PlayerO = 18;
+    public const int PlayerXTurn = 17;
+    public const int PlayerOTurn = 18;
   public const int SwitchTurns = 19;
     public const int GameOver = 20;
      public const int RestartGame = 21;
