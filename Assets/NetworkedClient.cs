@@ -164,6 +164,10 @@ public class NetworkedClient : MonoBehaviour
         {
             gameSystemManger.GetComponent<GameSystemManger>().GameOver(csv[1]);
         }
+        else if(signifier == ServerToClientSignifiers.RestartGame)
+        {
+            gameSystemManger.GetComponent<GameSystemManger>().RestartGame();
+        }
         // else if(signifier == ServerToClientSignifiers.Win)
         // {
         //     gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.Win);
@@ -211,8 +215,10 @@ public static class ClientToServerSignifiers
     public const int PlayerX = 5;
     public const int PlayerO = 6;
     public const int OpponentPlay = 7;
-   
-    public const int GameOver = 8;
+    public const int GridSpaceButtonPressed = 8;
+    public const int GameOver = 9;
+    public const int RestartGame = 10;
+    
 
 }
 
@@ -228,6 +234,7 @@ public static class ServerToClientSignifiers
     public const int PlayerO = 18;
   public const int SwitchTurns = 19;
     public const int GameOver = 20;
+     public const int RestartGame = 21;
 
 }
 

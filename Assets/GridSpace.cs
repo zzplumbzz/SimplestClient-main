@@ -56,10 +56,11 @@ public class GridSpace : MonoBehaviour
 
         buttonText.text = gameSystemManger.GetCurrentPlayer();
         button.interactable = false;
+        gameSystemManger.ChangeSides();
         gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
         
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + gridSpace + "," + gameSystemManger.currentPlayer);
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + gridSpace + "," + gameSystemManger.currentPlayer);
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + gridSpace + "," + gameSystemManger.currentPlayer);
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + gridSpace + "," + gameSystemManger.currentPlayer);
 Debug.Log("End Of Space has been set!");
         
         

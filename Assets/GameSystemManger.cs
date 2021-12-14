@@ -220,7 +220,8 @@ public class GameSystemManger : MonoBehaviour
 
     public string GetCurrentPlayer()
     {
-        Debug.Log("Getting current player");
+
+        Debug.Log(currentPlayer);
         return currentPlayer;
         
     }
@@ -303,7 +304,7 @@ public class GameSystemManger : MonoBehaviour
        
     }
 
-    void ChangeSides()
+    public void ChangeSides()
     {
         Debug.Log("Change sides?? function start");
         //currentPlayer = (currentPlayer == "X") ? "O" : "X";
@@ -311,7 +312,7 @@ public class GameSystemManger : MonoBehaviour
         {
             Debug.Log("Player X TURN");
             SetPlayerColors(playerX, playerO);
-            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
+             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "," + currentPlayer + playerX);
             // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
             // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
             if(currentPlayer != "X")
@@ -323,20 +324,21 @@ public class GameSystemManger : MonoBehaviour
         {
             Debug.Log("Player O TURN");
             SetPlayerColors(playerO, playerX);
-            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
+             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "," + currentPlayer + playerO);
             // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
             if(currentPlayer != "O")
             {
             SetBoardInteractable(false);
+            
             }
         }
     }
 
-    public void UpdateGridSpace(int gridSpace, string currentPlayer)
+    public void UpdateGridSpace(int gridSpace, string cPlayer)
     {
         Debug.Log("Update grid space start of function!!!");
         //updates text for each button pressed
-        buttonList[gridSpace].GetComponentInChildren<Text>().text = currentPlayer;
+        buttonList[gridSpace].GetComponentInChildren<Text>().text = cPlayer;
         // GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
@@ -346,7 +348,7 @@ public class GameSystemManger : MonoBehaviour
         // GridSpace6.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace7.GetComponentInChildren<Text>().text = currentPlayer;
         // GridSpace8.GetComponentInChildren<Text>().text = currentPlayer;
-        buttonList[gridSpace].GetComponent<Button>().interactable = false;
+//buttonList[gridSpace].GetComponent<Button>().interactable = false;
         //makes the button pressed not interactable anymore
         // GridSpace0.GetComponent<Button>().interactable = false;
         // GridSpace1.GetComponent<Button>().interactable = false;
@@ -358,7 +360,9 @@ public class GameSystemManger : MonoBehaviour
         // GridSpace7.GetComponent<Button>().interactable = false;
         // GridSpace8.GetComponent<Button>().interactable = false;
         Debug.Log("Update grid space ending turn!");
-        EndTurn(currentPlayer);
+        ChangeSides();
+        EndTurn(cPlayer);
+        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + ",Should be opponents turn??");
     }
 
     void SetPlayerColors(Player newPlayer, Player oldPlayer)
@@ -436,6 +440,7 @@ public class GameSystemManger : MonoBehaviour
         {
             buttonList[i].GetComponentInParent<Button>().interactable = toggle;
         }
+        
     }
 
     public void SetStartingSide (string startingPlayer) 
@@ -446,12 +451,24 @@ public class GameSystemManger : MonoBehaviour
         {
             SetPlayerColors(playerX, playerO); 
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
-            //PlayerO = SetBoardInteractable(false);
+            if(currentPlayer != "X")
+            {
+                SetBoardInteractable(false);
+                PlayerX.SetActive(false);
+
+            }
+            
         } 
         else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX); 
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerO + "player O turn?");
+            if(currentPlayer != "O")
+            {
+                SetBoardInteractable(false);
+                PlayerO.SetActive(false);
+            }
+            
         }
 
         StartGame();
@@ -467,8 +484,23 @@ public class GameSystemManger : MonoBehaviour
 
     bool CurrentClientsTurn(bool ClientsTurn)
     {
-        if(ClientsTurn)
+        Debug.Log(ClientsTurn);
+        if(ClientsTurn == PlayerX)
         {
+            Debug.Log("PlayerX TURN???????");
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + ",");
+            return true;
+            
+        }
+        else
+        {
+            Debug.Log("PlayerO TURN???????");
+            return false;
+        }
+
+        if(ClientsTurn == PlayerO)
+        {
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + ",");
             return true;
         }
         else
