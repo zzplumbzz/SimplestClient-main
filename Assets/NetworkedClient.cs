@@ -202,6 +202,9 @@ public static class ClientToServerSignifiers
     public const int GridSpaceButtonPressed = 8;
     public const int GameOver = 9;
     public const int RestartGame = 10;
+    public const int BoardIsInteractable = 11;
+    public const int BoardIsNotInteractable = 12;
+
     
     
 
@@ -210,16 +213,18 @@ public static class ClientToServerSignifiers
 
 public static class ServerToClientSignifiers
 {
-    public const int LoginComplete = 11;
-    public const int LoginFailed = 12;
-    public const int AccountCreationComplete = 13;
-    public const int AccountCreationFailed = 14;
-    public const int GameStart = 15;
-    public const int OpponentPlay = 16;
-    public const int PlayerXTurn = 17;
-    public const int PlayerOTurn = 18;
-  public const int SwitchTurns = 19;
-    public const int GameOver = 20;
-     public const int RestartGame = 21;
+    public const int LoginComplete = 13;
+    public const int LoginFailed = 14;
+    public const int AccountCreationComplete = 15;
+    public const int AccountCreationFailed = 16;
+    public const int GameStart = 17;
+    public const int OpponentPlay = 18;
+    public const int PlayerXTurn = 19;
+    public const int PlayerOTurn = 20;
+  public const int SwitchTurns = 21;
+    public const int GameOver = 22;
+     public const int RestartGame = 23;
+     public const int BoardIsInteractable = 24;
+    public const int BoardIsNotInteractable = 25;
 
 }

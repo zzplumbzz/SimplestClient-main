@@ -205,6 +205,8 @@ public class GameSystemManger : MonoBehaviour
 
         ChangeState(GameStates.Login);
 
+
+
     }
 
     // Update is called once per frame
@@ -235,6 +237,8 @@ public class GameSystemManger : MonoBehaviour
        
 
         moveCount++;
+
+      
         //win for rows
        if (buttonList[0].GetComponentInChildren<Text>().text == currentPlayer && buttonList[1].GetComponentInChildren<Text>().text == currentPlayer && buttonList[2].GetComponentInChildren<Text>().text == currentPlayer) 
         {
@@ -432,12 +436,22 @@ public class GameSystemManger : MonoBehaviour
            
             SetPlayerColors(playerX, playerO); 
             networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
+            if(startingPlayer != "X")
+            {
+                SetBoardInteractable(false);
+                networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + ",Board SHouldnt work!");
+            }
             
         } 
         else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX);
             networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
+            if(startingPlayer != "O")
+            {
+                SetBoardInteractable(false);
+                networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + ",Board SHouldnt work!");
+            }
  
         }
 
@@ -708,6 +722,7 @@ public class GameSystemManger : MonoBehaviour
     public void updatePlayerSide(int b)
     {
         buttonList[b].GetComponentInChildren<Text>().text = currentPlayer;
+        
     }
 
 }
