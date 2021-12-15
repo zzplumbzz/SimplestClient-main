@@ -80,6 +80,7 @@ public class GameSystemManger : MonoBehaviour
 
     private int moveCount;
 
+    public string marker = "x";
     public Player playerX;
     public Player playerO;
     public PlayerColor activePlayerColor;
@@ -231,8 +232,7 @@ public class GameSystemManger : MonoBehaviour
 
     public void EndTurn(string winningPlayer)
     {
-        Debug.Log("Turn should End?");
-        
+       
 
         moveCount++;
         //win for rows
@@ -303,21 +303,19 @@ public class GameSystemManger : MonoBehaviour
             
            
         ChangeSides();
-        Debug.Log("Change sides?? at the end of end turn!!!!!!!");
+   
        
     }
 
     public void ChangeSides()
     {
-        Debug.Log("Change sides?? function start");
+  
         //currentPlayer = (currentPlayer == "X") ? "O" : "X";
         if(currentPlayer == "X")
         {
             Debug.Log("Player X TURN");
             SetPlayerColors(playerX, playerO);
              networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "," + currentPlayer + playerX);
-            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerX + "," + currentPlayer + playerX);
-            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerX + "Player X turn?");
             if(currentPlayer != "X")
             {
             SetBoardInteractable(false);
@@ -328,7 +326,6 @@ public class GameSystemManger : MonoBehaviour
             Debug.Log("Player O TURN");
             SetPlayerColors(playerO, playerX);
              networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "," + currentPlayer + playerO);
-            // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerO + "," + currentPlayer + playerO);
             if(currentPlayer != "O")
             {
             SetBoardInteractable(false);
@@ -339,33 +336,13 @@ public class GameSystemManger : MonoBehaviour
 
     public void UpdateGridSpace(int gridSpace, string cPlayer)
     {
-        Debug.Log("Update grid space start of function!!!");
-        //updates text for each button pressed
+
+
         buttonList[gridSpace].GetComponentInChildren<Text>().text = cPlayer;
-        // GridSpace0.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace1.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace2.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace3.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace4.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace5.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace6.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace7.GetComponentInChildren<Text>().text = currentPlayer;
-        // GridSpace8.GetComponentInChildren<Text>().text = currentPlayer;
-//buttonList[gridSpace].GetComponent<Button>().interactable = false;
-        //makes the button pressed not interactable anymore
-        // GridSpace0.GetComponent<Button>().interactable = false;
-        // GridSpace1.GetComponent<Button>().interactable = false;
-        // GridSpace2.GetComponent<Button>().interactable = false;
-        // GridSpace3.GetComponent<Button>().interactable = false;
-        // GridSpace4.GetComponent<Button>().interactable = false;
-        // GridSpace5.GetComponent<Button>().interactable = false;
-        // GridSpace6.GetComponent<Button>().interactable = false;
-        // GridSpace7.GetComponent<Button>().interactable = false;
-        // GridSpace8.GetComponent<Button>().interactable = false;
-        Debug.Log("Update grid space ending turn!");
+ 
+
         ChangeSides();
         EndTurn(cPlayer);
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.OpponentPlay + ",Should be opponents turn??");
     }
 
     void SetPlayerColors(Player newPlayer, Player oldPlayer)
@@ -455,24 +432,13 @@ public class GameSystemManger : MonoBehaviour
            
             SetPlayerColors(playerX, playerO); 
             networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
-            // if(currentPlayer != "X")
-            // {
-            //     SetBoardInteractable(false);
-            //     PlayerX.SetActive(false);
-
-            // }
             
         } 
         else if(currentPlayer == "O")
         {
-            SetPlayerColors(playerO, playerX); 
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "player O turn?");
-            // if(currentPlayer != "O")
-            // {
-            //     SetBoardInteractable(false);
-            //     PlayerO.SetActive(false);
-            // }
-            
+            SetPlayerColors(playerO, playerX);
+            networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
+ 
         }
 
         StartGame();
@@ -491,14 +457,14 @@ public class GameSystemManger : MonoBehaviour
         Debug.Log(ClientsTurn);
         if(ClientsTurn == PlayerX)
         {
-            Debug.Log("PlayerX TURN???????");
+       
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + ",");
             return true;
             
         }
         else
         {
-            Debug.Log("PlayerO TURN???????");
+          
             return false;
         }
 
@@ -513,24 +479,6 @@ public class GameSystemManger : MonoBehaviour
         }
     }
 
-    // void SetPlayerButtons (bool toggle) 
-    // {
-    //     playerX.button.interactable = toggle; 
-    //     playerO.button.interactable = toggle;
-    //     if(playerX.button.interactable == true)//was = toggle
-    //     {
-    //         //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "first players turn?");
-    //         playerO.button.interactable = false;
-    //     }
-    //     else if(playerO.button.interactable == true)//was = toggle
-    //     {
-    //         networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.OpponentPlay + "oppenents turn?");
-    //         playerX.button.interactable = false;
-    //     }
-        
-        
-    //    // SetPlayerButtons (false);
-    // }
 
     void SetPlayerColorsInactive()
     {
@@ -575,7 +523,6 @@ public class GameSystemManger : MonoBehaviour
         Debug.Log("create Toggle");
         loginToggle.GetComponent<Toggle>().SetIsOnWithoutNotify(!newValue);
 
-
     }
 
     private void JoinGameRoomButtonPressed()
@@ -588,10 +535,7 @@ public class GameSystemManger : MonoBehaviour
     }
     private void RestartButtonPressed()
     {
-        // Debug.Log(",Tic tac toe button pressed");
-        // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "");
-        // ChangeState(GameStates.TicTacToe);
-
+   
 
     }
 
@@ -641,14 +585,10 @@ public class GameSystemManger : MonoBehaviour
         restartButton.SetActive(false);
         quitButton.SetActive(false);
         menuCanvas.SetActive(false);
-        //board.SetActive(false);
-       // box.SetActive(false);
         HelloCB.SetActive(false);
         GGCB.SetActive(false);
         ReplayButton.SetActive(false);
         gameOverPanel.SetActive(false);
-        //gameOverText.SetActive(false);
-        //TTTBoard stuff
         TTTBoard.SetActive(false);
         Grid0.SetActive(false);
         Grid1.SetActive(false);
@@ -682,29 +622,27 @@ public class GameSystemManger : MonoBehaviour
             textNameInfo.SetActive(true);
             textPasswordInfo.SetActive(true);
 
-             //board.SetActive(false);
-        //box.SetActive(false);
-        HelloCB.SetActive(false);
-        GGCB.SetActive(false);
-        ReplayButton.SetActive(false);
-        gameOverPanel.SetActive(false);
-        //gameOverText.SetActive(false);
+
+            HelloCB.SetActive(false);
+            GGCB.SetActive(false);
+            ReplayButton.SetActive(false);
+            gameOverPanel.SetActive(false);
+      
 
             TTTBoard.SetActive(false);
-        Grid0.SetActive(false);
-        Grid1.SetActive(false);
-        Grid2.SetActive(false);
-        Grid3.SetActive(false);
-        GridSpace0.SetActive(false);
-        GridSpace1.SetActive(false);
-        GridSpace2.SetActive(false);
-        GridSpace3.SetActive(false);
-        GridSpace4.SetActive(false);
-        GridSpace5.SetActive(false);
-        GridSpace6.SetActive(false);
-        GridSpace7.SetActive(false);
-        GridSpace8.SetActive(false);
-
+            Grid0.SetActive(false);
+            Grid1.SetActive(false);
+            Grid2.SetActive(false);
+            Grid3.SetActive(false);
+            GridSpace0.SetActive(false);
+            GridSpace1.SetActive(false);
+            GridSpace2.SetActive(false);
+            GridSpace3.SetActive(false);
+            GridSpace4.SetActive(false);
+            GridSpace5.SetActive(false);
+            GridSpace6.SetActive(false);
+            GridSpace7.SetActive(false);
+            GridSpace8.SetActive(false);
         }
         else if (newState == GameStates.MainMenu)
         {
@@ -727,8 +665,7 @@ public class GameSystemManger : MonoBehaviour
         else if (newState == GameStates.TicTacToe)
         {
 
-            Debug.Log("In Game state");
-            //ticTacToeSquareButton.SetActive(false);
+            Debug.Log("In Game state"); 
             quitButton.SetActive(true);
             GGCB.SetActive(true);
             HelloCB.SetActive(true);
@@ -766,51 +703,13 @@ public class GameSystemManger : MonoBehaviour
             SetPlayerColors(playerX, playerO);
             StartGame();
         }
-
-        // else if (newState == GameStates.OpponentPlay)
-        // {
-        //     Debug.Log("opponent play state");
-        //     //ticTacToeSquareButton.SetActive(false);
-        //     joinGameRoomButton.SetActive(false);
-        //     quitButton.SetActive(true);
-        //    // board.SetActive(true);
-        //     //box.SetActive(true);
-        //     GGCB.SetActive(true);
-        //     HelloCB.SetActive(true);
-
-
-
-        // }
-
-        // else if (newState == GameStates.Win)
-        // {
-
-        //     quitButton.SetActive(true);
-        //    // board.SetActive(false);
-        //     //box.SetActive(false);
-        //     GGCB.SetActive(true);
-        //     HelloCB.SetActive(true);
-        //     ReplayButton.SetActive(true);
-        //     gameOverPanel.SetActive(true);
-        //     //gameOverText.SetActive(true);
-
-
-
-        //     joinGameRoomButton.SetActive(false);
-        //     submitButton.SetActive(false);
-        //     userNameInput.SetActive(false);
-        //     passwordInput.SetActive(false);
-        //     createToggle.SetActive(false);
-        //     loginToggle.SetActive(false);
-
-        //     textNameInfo.SetActive(false);
-        //     textPasswordInfo.SetActive(false);
-
-        //     joinGameRoomButton.SetActive(false);
-        //     //ticTacToeSquareButton.SetActive(false);
-        // }
-
     }
+
+    public void updatePlayerSide(int b)
+    {
+        buttonList[b].GetComponentInChildren<Text>().text = currentPlayer;
+    }
+
 }
 
 

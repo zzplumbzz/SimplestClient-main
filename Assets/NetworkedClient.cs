@@ -144,9 +144,7 @@ public class NetworkedClient : MonoBehaviour
         {
             int WhichPlayersTurn = int.Parse(csv[0]);
             Debug.Log("Check " + WhichPlayersTurn );
-            //gameSystemManger.GetComponent<GameSystemManger>().currentPlayer = "" + int.Parse(csv[0]);
             Debug.Log("Starting player: " + gameSystemManger.GetComponent<GameSystemManger>().currentPlayer);
-            Debug.Log("GAME FINALLY STARTED!!!!!!!!!!!!!!!!!!!!!!!!");
             gameSystemManger.GetComponent<GameSystemManger>().playerID1 = "X";
             gameSystemManger.GetComponent<GameSystemManger>().playerID2 = "O";
             gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.TicTacToe);
@@ -154,7 +152,6 @@ public class NetworkedClient : MonoBehaviour
         }
         else if(signifier == ServerToClientSignifiers.PlayerXTurn)
         {
-           // currentPlayer = "X";
            
            SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + ",PLayer X turn!");
         }
@@ -165,8 +162,8 @@ public class NetworkedClient : MonoBehaviour
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
-            Debug.Log("Opponent Play!");
-            gameSystemManger.GetComponent<GameSystemManger>().UpdateGridSpace(int.Parse(csv[1]), csv[2]);
+            int b = int.Parse(csv[1]);
+            gameSystemManger.GetComponent<GameSystemManger>().updatePlayerSide(b);///////////////////////////////////////////////////////
         }
         else if(signifier == ServerToClientSignifiers.GameOver)
         {
@@ -176,27 +173,6 @@ public class NetworkedClient : MonoBehaviour
         {
             gameSystemManger.GetComponent<GameSystemManger>().RestartGame();
         }
-        // else if(signifier == ServerToClientSignifiers.Win)
-        // {
-        //     gameSystemManger.GetComponent<GameSystemManger>().ChangeState(GameStates.Win);
-        // }
-        // else if(signifier == ServerToClientSignifiers.SendHelloButtonPressed)
-        // {
-        //     GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendHelloButtonPressed + ",Hello" + MS.TextField1);
-        //    // GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TTTButtonHitClient + ",Hello");
-        // }
-        // else if (signifier == ServerToClientSignifiers.SendGGButtonPressed)
-        // {
-        //     GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.SendGGButtonPressed + ",GoodGame");
-        // }
-        // else if(signifier == ClientToServerSignifiers.HelloButtonPressed)
-        // {
-        //     GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.HelloButtonPressed + ",Hello!");
-        // }
-        // else if (signifier == ClientToServerSignifiers.GGButtonPressed)
-        // {
-        //     GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GGButtonPressed + ",Good Game!");
-        // }
     }
 
     public string GetCurrentPlayer()
@@ -247,6 +223,3 @@ public static class ServerToClientSignifiers
      public const int RestartGame = 21;
 
 }
-
-
-
