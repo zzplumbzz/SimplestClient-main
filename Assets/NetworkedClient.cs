@@ -20,6 +20,7 @@ public class NetworkedClient : MonoBehaviour
     int ourClientID;
 
     GameObject gameSystemManger;
+    GameObject GridSpace;
  
     public string playerX;
     public string playerO;
@@ -165,6 +166,12 @@ public class NetworkedClient : MonoBehaviour
             int b = int.Parse(csv[1]);
             gameSystemManger.GetComponent<GameSystemManger>().updatePlayerSide(b);///////////////////////////////////////////////////////
         }
+        else if (signifier == ServerToClientSignifiers.GridSpaceButtonPressed)
+        {
+            int b = int.Parse(csv[1]);
+            gameSystemManger.GetComponent<GameSystemManger>().updatePlayerSide(b);///////////////////////////////////////////////////////
+            
+        }
         else if(signifier == ServerToClientSignifiers.GameOver)
         {
             gameSystemManger.GetComponent<GameSystemManger>().GameOver(csv[1]);
@@ -221,7 +228,7 @@ public static class ServerToClientSignifiers
     public const int OpponentPlay = 18;
     public const int PlayerXTurn = 19;
     public const int PlayerOTurn = 20;
-  public const int SwitchTurns = 21;
+  public const int GridSpaceButtonPressed = 21;
     public const int GameOver = 22;
      public const int RestartGame = 23;
      public const int BoardIsInteractable = 24;

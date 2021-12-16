@@ -484,7 +484,7 @@ public class GameSystemManger : MonoBehaviour
 
         if(ClientsTurn == PlayerO)
         {
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + ",");
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + ",");
             return true;
         }
         else
@@ -722,6 +722,8 @@ public class GameSystemManger : MonoBehaviour
     public void updatePlayerSide(int b)
     {
         buttonList[b].GetComponentInChildren<Text>().text = currentPlayer;
+        buttonList[b].GetComponent<Button>().interactable = false;
+        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + b);///////
         
     }
 
