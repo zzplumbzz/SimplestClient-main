@@ -12,15 +12,12 @@ public class GridSpace : MonoBehaviour
     private GameSystemManger gameSystemManger;
     public GameObject networkedClient;
     public int currentGrid = 0;
-    // GameObject GridSpace0;
-    // GameObject GridSpace1;
-    // GameObject GridSpace2;
-    // GameObject GridSpace3;
-    // GameObject GridSpace4;
-    // GameObject GridSpace5;
-    // GameObject GridSpace6;
-    // GameObject GridSpace7;
-    // GameObject GridSpace8;
+    public bool on = true;
+
+    void Start()
+    {
+        on = true;
+    }
 
     public void SetGameSystemManagerReferance(GameSystemManger manager)
     {
@@ -41,55 +38,39 @@ public class GridSpace : MonoBehaviour
     {
         if(gameSystemManger.currentPlayer == "X")
         {
+            on = false;
             buttonText.text = gameSystemManger.GetCurrentPlayer();
-            button.interactable = false;
             gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "," + currentGrid);
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsInteractable + "," + currentGrid);///////
-            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
+            
+            gameSystemManger.SetBoardInteractable(false);
 
            if (gameSystemManger.currentPlayer == "O")
            {
-               gameSystemManger.SetBoardInteractable(true);
+               
                gameSystemManger.currentPlayer = "X";
-               button.interactable = false;
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsInteractable + "," + currentGrid);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
            }
            else  if(gameSystemManger.currentPlayer == "X")
            {
                gameSystemManger.currentPlayer = "O";
-               button.interactable = false;///////////////////
-               gameSystemManger.SetBoardInteractable(false);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + "," + currentGrid);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
            }
         }
         else if(gameSystemManger.currentPlayer == "O")
         {
+            on = false;
             buttonText.text = gameSystemManger.GetCurrentPlayer();
-            button.interactable = false;
             gameSystemManger.EndTurn(gameSystemManger.currentPlayer);
-           networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "," + currentGrid);
-           networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + "," + currentGrid);
-           networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.TicTacToePlay + "," + currentGrid);
+            gameSystemManger.SetBoardInteractable(false);
     
             if (gameSystemManger.currentPlayer == "O")
            {
                gameSystemManger.currentPlayer = "X";
-               button.interactable = false;///////////////////////////////////
-               gameSystemManger.SetBoardInteractable(false);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + "," + currentGrid);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
                
            }
            else  if(gameSystemManger.currentPlayer == "X")
            {
                gameSystemManger.currentPlayer = "O";
-               gameSystemManger.SetBoardInteractable(true);
-               button.interactable = false;
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsInteractable + "," + currentGrid);
-               networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + currentGrid);///////
            }
         }
    

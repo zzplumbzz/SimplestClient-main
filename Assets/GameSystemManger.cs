@@ -22,9 +22,6 @@ using System.IO;
 public class GameSystemManger : MonoBehaviour
 {
 
-    // public Board boardScript;
-    // public Box boxScript;
-
     GameObject submitButton, userNameInput, passwordInput, createToggle, loginToggle;
 
     GameObject textNameInfo, textPasswordInfo;
@@ -137,10 +134,6 @@ public class GameSystemManger : MonoBehaviour
                 quitButton = go;
             else if (go.name == "MenuCanvas")
                 menuCanvas = go;
-            // else if (go.name == "Board")
-            //     board = go;
-            // else if (go.name == "Box")
-            //     box = go;
             else if (go.name == "HelloButton")
                 HelloCB = go;
             else if (go.name == "GGButton")
@@ -149,9 +142,6 @@ public class GameSystemManger : MonoBehaviour
                 ReplayButton = go;
             else if (go.name == "GameOverPanel")
                 gameOverPanel = go;
-            // else if (go.name == "GameOverText")
-            //     gameOverText = tx;
-                //ttt board
                 else if (go.name == "TTTBoard")
                 TTTBoard = go;
                  else if (go.name == "Grid")
@@ -209,17 +199,10 @@ public class GameSystemManger : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     void SetGameSystemManagerReferanceOnButtons()
     {
         for(int i = 0; i < buttonList.Length; i++)
         {
-            //buttonList[i].GetComponent<GridSpace>().SetGameSystemManagerReferance(this);
             buttonList[i].GetComponentInParent<GridSpace>().SetGameSystemManagerReferance(this);
         }
     }
@@ -301,7 +284,7 @@ public class GameSystemManger : MonoBehaviour
         {
             
             GameOver("draw");
-            //Debug.Log(GameOver + "Draw");
+           
         }
        
             
@@ -314,26 +297,24 @@ public class GameSystemManger : MonoBehaviour
     public void ChangeSides()
     {
   
-        //currentPlayer = (currentPlayer == "X") ? "O" : "X";
         if(currentPlayer == "X")
         {
             Debug.Log("Player X TURN");
             SetPlayerColors(playerX, playerO);
-             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "," + currentPlayer + playerX);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerXTurn + "," + currentPlayer + playerX);
             if(currentPlayer != "X")
             {
-            SetBoardInteractable(false);
+                SetBoardInteractable(false);
             }
         }
         else if(currentPlayer == "O")
         {
             Debug.Log("Player O TURN");
             SetPlayerColors(playerO, playerX);
-             networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "," + currentPlayer + playerO);
+            networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + "," + currentPlayer + playerO);
             if(currentPlayer != "O")
             {
-            SetBoardInteractable(false);
-            
+                SetBoardInteractable(false);
             }
         }
     }
@@ -364,8 +345,9 @@ public class GameSystemManger : MonoBehaviour
       {
           SetBoardInteractable(false);
       }
+
       gameOverPanel.SetActive(true);
-        //SetBoardInteractable(false);
+
         if(winningPlayer == "draw")
         {
             
@@ -376,13 +358,10 @@ public class GameSystemManger : MonoBehaviour
         else
         {
             SetGameOverText(winningPlayer + " Wins!");
-           // networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.Win + ",Wins");
         }
-        //SetGameOverText(currentPlayer + " Wins!");
-        //Debug.Log("SomeOne won!");
-
+            
         restartButton.SetActive(true);
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
+
     }
 
     void SetGameOverText(string value)
@@ -393,65 +372,52 @@ public class GameSystemManger : MonoBehaviour
 
     public void RestartGame()
     {
-        //currentPlayer = "X";
+        
         moveCount = 0;
         gameOverPanel.SetActive(false);
-        //restartButton.SetActive(false);
-        //SetPlayerButtons(true);
-        //startInfo.SetActive(true);
+        
         SetPlayerColors(playerX, playerO);
-        //SetPlayerColors(playerX, playerO);
         SetBoardInteractable(true);
         for(int i = 0; i < buttonList.Length; i++)
         {
             buttonList[i].text = "";
         }
-
-        //SetPlayerColorsInactive();
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.GameStart + ",RestartGame");
-        // for (int i = 0; i < buttonList.Length; i++)
-        // {
-        //     //buttonList[i].GetComponentInParent<Button>().interactable = true;
-        //     buttonList [i].text = ""; 
-        // }
-
-        
     }
 
     public void SetBoardInteractable(bool toggle)
     {
+        
         for (int i = 0; i < buttonList.Length; i++)
         {
-            buttonList[i].GetComponentInParent<Button>().interactable = toggle;
+             buttonList[i].GetComponentInParent<Button>().interactable = toggle;
+
+            if (buttonList[i].GetComponentInParent<GridSpace>().on == false)
+            {
+                buttonList[i].GetComponentInParent<Button>().interactable = false;
+            }
         }
+        
+        
         
     }
 
     public void SetStartingSide (string startingPlayer) 
     { 
         currentPlayer = startingPlayer; 
-        //networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ServerToClientSignifiers.PlayerTurn + "starting player");
+
         if (currentPlayer == "X") 
         {
            
             SetPlayerColors(playerX, playerO); 
             networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
-            if(startingPlayer != "X")
-            {
-                SetBoardInteractable(false);
-                networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + ",Board SHouldnt work!");
-            }
+           
             
         } 
         else if(currentPlayer == "O")
         {
             SetPlayerColors(playerO, playerX);
             networkedClient.GetComponent<NetworkedClient>().currentPlayer = "X";
-            if(startingPlayer != "O")
-            {
-                SetBoardInteractable(false);
-                networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.BoardIsNotInteractable + ",Board SHouldnt work!");
-            }
+          
  
         }
 
@@ -461,8 +427,6 @@ public class GameSystemManger : MonoBehaviour
     void StartGame()
     {
         SetBoardInteractable(true);
-        //SetPlayerButtons(false);
-        //startInfo.SetActive(false);
         
     }
 
@@ -722,9 +686,9 @@ public class GameSystemManger : MonoBehaviour
     public void updatePlayerSide(int b)
     {
         buttonList[b].GetComponentInChildren<Text>().text = currentPlayer;
-        buttonList[b].GetComponent<Button>().interactable = false;
-        networkedClient.GetComponent<NetworkedClient>().SendMessageToHost(ClientToServerSignifiers.GridSpaceButtonPressed + "," + b);///////
-        
+        buttonList[b].GetComponentInParent<Button>().interactable = false;
+        buttonList[b].GetComponentInParent<GridSpace>().on = false;
+        SetBoardInteractable(true);
     }
 
 }
