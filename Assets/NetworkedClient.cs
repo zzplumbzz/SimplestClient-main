@@ -160,13 +160,12 @@ public class NetworkedClient : MonoBehaviour
         else if(signifier == ServerToClientSignifiers.PlayerOTurn)
         {
             
-            SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + ",PLayer X turn!");
+            SendMessageToHost(ClientToServerSignifiers.PlayerOTurn + ",PLayer O turn!");
         }
         else if (signifier == ServerToClientSignifiers.OpponentPlay)
         {
             int b = int.Parse(csv[1]);
-            gameSystemManger.GetComponent<GameSystemManger>().updatePlayerSide(b);///////////////////////////////////////////////////////
-            //GridSpace.GetComponent<GridSpace>().button.interactable = false;
+            gameSystemManger.GetComponent<GameSystemManger>().updatePlayerSide(b);
         }
         else if(signifier == ServerToClientSignifiers.GameOver)
         {

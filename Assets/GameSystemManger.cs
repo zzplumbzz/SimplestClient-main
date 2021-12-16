@@ -289,7 +289,7 @@ public class GameSystemManger : MonoBehaviour
        
             
            
-        ChangeSides();
+       ChangeSides();
    
        
     }
@@ -375,12 +375,14 @@ public class GameSystemManger : MonoBehaviour
         
         moveCount = 0;
         gameOverPanel.SetActive(false);
-        
+        restartButton.SetActive(false);
         SetPlayerColors(playerX, playerO);
         SetBoardInteractable(true);
         for(int i = 0; i < buttonList.Length; i++)
         {
-            buttonList[i].text = "";
+            buttonList[i].text = "";/////////////////////////////////////////////////////////
+            buttonList[i].GetComponentInParent<Button>().interactable = true;
+            buttonList[i].GetComponentInParent<GridSpace>().on = true;
         }
     }
 
